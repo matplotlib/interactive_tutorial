@@ -1,0 +1,103 @@
+* introduction
+ - post-it notes
+ - if you have used the pan / zoom tools or the 'g', 'l', 'k',
+   ... keys in mpl, you have used the mpl event framework
+   - show demo of keys / pan / zoom
+ - this is the first time I have given this, thanks for being guinea pigs!
+ - has always been in mpl
+ - think about this work with an eye towards embedding in your own GUI
+ - $ conda create -p /tmp/demo -c conda-forge -c conda-forge/label/rc matplotlib pandas pytables ipython
+
+** There is at least a book of material here
+
+Interactive applications using matplotlib by Ben Root
+
+"Learn how Lincoln could use Matplotlib to save the Earth from hordes
+of ravenous space ware-rabbits!  Just plotting your data won't save
+the world, but turning your plots into interactive applications will
+help your users explore their data and gain greater insight into their
+problems.  This book will walk the reader through the process of
+turning a simple radar viewer into a useful hazardous event tracker,
+so you too can spot where the space ware-rabbits are going to strike
+next!" - Ben Root
+
+https://www.packtpub.com/application-development/interactive-applications-using-matplotlib
+
+ - http://matplotlib.org/users/event_handling.html
+   - this material will probably be folded into this page
+
+* 00-explore
+ - 'hello world' of event processing
+ - layers of mpl
+   - figure / axes / artist vs canvas distinction
+   - figure vs figure manager vs canvas
+ - canvas.mpl_connect
+ - canval.mpl_disconnect
+ - Three 'classes' of events
+   - active
+     - ['button_press_event', 'button_release_event', 'scroll_event',
+	 'key_press_event', 'key_release_event', 'pick_event']
+   - passive
+     - ['motion_notify_event', 'figure_enter_event', 'axes_enter_event', 'axes_leave_event']
+   - internal
+     - ['draw_event', 'resize_event']
+     - important if you are doing blitting (which is it's own tutorial)
+ - use OO interface when ever possible
+
+* 01-callable
+ - frequently want to carry state between user interactions
+ - simplest way (short of globals) is a callable class
+ - going to want to restart IPython after this
+   - or `matplolib.rcdefaults()`
+
+** WARNING
+ - the callback registry (matplotilb.cbook.CallbackRegistry) only hold
+   weakrefs to the callback functions.  If you do not explicitly keep
+   a ref to them around they maybe garbage collected.
+ - this is probably the biggest gotcha
+ - done to prevent reference cycles
+
+* 02-event filtering
+ - use an object with several methods, hook them all up to events
+ - look at the values in the events to decide what to do
+ - hold an artist as state and mutate on user input
+
+* interlude about data
+ - data sets from NOAA, historical hourly weather reports
+ - only extracting the air temperature, a LOT more information in the reports
+ - raw data extraction code in 99-collect_data.py, but processed data from BWI in repo
+ - ~10 years of ~hourly air temperature readings
+#+BEGIN_SRC python
+from pddc_helpers import load_bwi_data
+
+bwi = load_bwi_data()
+
+#+END_SRC
+ - plot full time series
+   - this is sort of useless, but can zoom in!
+ - times are in UTC because I lost to timezone normalization while
+   prepping for this
+
+* 03-picking
+ - look at 2015-01-01 to a few days ago aggregated by day
+   - look at bwi_daily columns
+ - looking a bit better, but only looking at the mean
+   - can see some interesting days
+ - 'pick_event' can have arbitrary attributes added by the picker
+   - show `set_picker` docstring
+ - `set_gid` / `get_gid` a place for users to stash an id, not used my mpl
+ - `set_label`/`get_label` are the name used for automatic legend generation
+
+* 04-custom_plotting
+ - mpl's 'native' API is low level
+ - write the API you need for your data
+ - i-haz-a-soap-box
+
+* 05-interactive_temperature
+ - fully functioning 'app'
+ - what else could you make it do?
+
+* 99-get data
+ - $ conda install -c conda-forge cartopy proj4
+ - click on the stations to print station name + template
+ - use
