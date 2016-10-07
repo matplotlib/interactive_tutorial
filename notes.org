@@ -3,10 +3,10 @@
  - if you have used the pan / zoom tools or the 'g', 'l', 'k',
    ... keys in mpl, you have used the mpl event framework
    - show demo of keys / pan / zoom
+   - the updating coordinates
  - this is the first time I have given this, thanks for being guinea pigs!
- - has always been in mpl
+ - events has always been in mpl
  - think about this work with an eye towards embedding in your own GUI
- - $ conda create -p /tmp/demo -c conda-forge -c conda-forge/label/rc matplotlib pandas pytables ipython
 
 ** There is at least a book of material here
 
@@ -25,6 +25,12 @@ https://www.packtpub.com/application-development/interactive-applications-using-
 
  - http://matplotlib.org/users/event_handling.html
    - this material will probably be folded into this page
+ - http://matplotlib.org/examples/event_handling/index.html
+ - http://matplotlib.org/api/widgets_api.html
+
+** install
+
+$ conda create -p /tmp/demo -c conda-forge -c conda-forge/label/rc 'matplotlib>1.6' pandas pytables ipython
 
 * 00-explore
  - 'hello world' of event processing
@@ -32,13 +38,14 @@ https://www.packtpub.com/application-development/interactive-applications-using-
    - figure / axes / artist vs canvas distinction
    - figure vs figure manager vs canvas
  - canvas.mpl_connect
- - canval.mpl_disconnect
+ - canvas.mpl_disconnect
  - Three 'classes' of events
    - active
      - ['button_press_event', 'button_release_event', 'scroll_event',
 	 'key_press_event', 'key_release_event', 'pick_event']
    - passive
-     - ['motion_notify_event', 'figure_enter_event', 'axes_enter_event', 'axes_leave_event']
+     - ['motion_notify_event', 'figure_enter_event',
+       'axes_enter_event', 'axes_leave_event']
    - internal
      - ['draw_event', 'resize_event']
      - important if you are doing blitting (which is it's own tutorial)
@@ -59,13 +66,14 @@ https://www.packtpub.com/application-development/interactive-applications-using-
 
 * 02-event filtering
  - use an object with several methods, hook them all up to events
- - look at the values in the events to decide what to do
+- look at the values in the events to decide what to do
  - hold an artist as state and mutate on user input
 
 * interlude about data
  - data sets from NOAA, historical hourly weather reports
  - only extracting the air temperature, a LOT more information in the reports
- - raw data extraction code in 99-collect_data.py, but processed data from BWI in repo
+ - raw data extraction code in 99-collect_data.py, but processed data
+   from BWI in repo
  - ~10 years of ~hourly air temperature readings
 #+BEGIN_SRC python
 from pddc_helpers import load_bwi_data
@@ -90,7 +98,8 @@ bwi = load_bwi_data()
 
 * 04-custom_plotting
  - mpl's 'native' API is low level
- - write the API you need for your data
+ - write the API you need for your data (inside of which you bring
+   your data to the API)
  - i-haz-a-soap-box
 
 * 05-interactive_temperature

@@ -23,3 +23,5 @@ for windows
 All of the examples should be run from IPython as
 
  %run -i NN-FILE.py
+
+and sholud each be self-contained.
