@@ -30,7 +30,7 @@ https://www.packtpub.com/application-development/interactive-applications-using-
 
 ** install
 
-$ conda create -p /tmp/demo -c conda-forge -c conda-forge/label/rc 'matplotlib>1.6' pandas pytables ipython
+$ conda create -p /tmp/demo -c conda-forge -c conda-forge/label/rc 'matplotlib>1.6' pandas pytables ipython python=3
 
 * 00-explore
  - 'hello world' of event processing
