@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 from cycler import cycler
 from pddc_helpers import (load_bwi_data, aggregate_by_month, aggregate_by_day,
+                          plot_aggregated_errorbar,
                           extract_day_of_hourly, extract_month_of_daily)
 
 
@@ -179,20 +179,29 @@ class AggregatedTimeTrace:
             self._plot_T_by_hour(sel_date.year, sel_date.month, sel_date.day)
 
     def _plot_T_by_hour(self, year, month, day):
+        # get the hourly data for a single day
         df = extract_day_of_hourly(self.data_by_hour, year, month, day)
+        # format the label
         label = '{:s}: {:04d}-{:02d}-{:02d}'.format(
             self.label, year, month, day)
+        # A 'simple' plot
         self.daily_ax.plot('T', '-', picker=10, label=label, data=df,
                            **next(self.style_cycle))
+        # update the legend
         self.daily_ax.legend()
+        # ask the GUI to redraw the next time it can
         self.daily_ax.figure.canvas.draw_idle()
 
     def _daily_on_pick(self, event):
         if event.mouseevent.inaxes is not self.daily_ax:
             return
+        # grab the canvas
         canvas = event.artist.figure.canvas
+        # remove the artist
         event.artist.remove()
+        # update the legend
         self.daily_ax.legend()
+        # redraw the canvas next time it is convenient
         canvas.draw_idle()
 
     def remove(self):
