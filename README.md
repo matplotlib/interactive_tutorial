@@ -16,7 +16,7 @@ for windows
 
 ### for 99-get_data
 
-    $ conda install -c cartopy proj4
+    $ conda install -c conda-forge cartopy proj4
 
 ## Running
 
@@ -24,4 +24,4 @@ All of the examples should be run from IPython as
 
    %run -i NN-FILE.py
 
-and sholud each be self-contained.
+and should each be self-contained.
