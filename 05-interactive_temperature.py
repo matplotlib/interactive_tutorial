@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 from cycler import cycler
 from pddc_helpers import (load_bwi_data, aggregate_by_month, aggregate_by_day,
-                          plot_aggregated_errorbar,
                           extract_day_of_hourly, extract_month_of_daily)
 
 
