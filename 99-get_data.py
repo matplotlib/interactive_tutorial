@@ -21,6 +21,7 @@ def get_filtered_isd(data_dir, s_date=None, f_date=None,
     fname = 'isd-history.csv'
     target_file = os.path.join(data_dir, fname)
 
+    os.makedirs(data_dir, exist_ok=True)
     if not os.path.exists(target_file) and allow_download:
         url_target = 'ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.csv'
         with open(target_file, 'wb') as fout:
