@@ -1,0 +1,11 @@
+name: mpl-tutorial
+channels:
+- anaconda
+- defaults
+dependencies:
+- matplotlib
+- pandas
+- pytables
+- h5py
+- ipython
+- python=3.6
