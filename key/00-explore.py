@@ -1,3 +1,8 @@
+# This may be required if you are on a Mac and default to using OSX as
+# your backend
+# import matplotlib
+# matplotlib.use('qt5agg')
+
 import matplotlib.pyplot as plt
 import numpy as np
 

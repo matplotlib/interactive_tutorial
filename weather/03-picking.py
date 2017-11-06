@@ -50,8 +50,11 @@ plt.show()
 
 # EXERCISE
 # - make the print out nicer looking
-# - make picking add a label with `label_data`
-# - use `get_gid` to filter instead of `is not`
+
 # - open a new window with plot of day temperature
 #   - fig, ax = plt.subplots()
 #   - one_day = extract_day_of_hourly(bwi, 2015, 10, 18)
+
+
+# - make picking add a label with `label_data`
+# - use `get_gid` to filter instead of `is not`

@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from pddc_helpers import load_bwi_data, aggregate_by_month
+from w_helpers import load_bwi_data, aggregate_by_month
 plt.ion()
 
 bwi = load_bwi_data()

@@ -42,4 +42,4 @@ class FormatterCollector:
 
 fc = FormatterCollector()
 cids = {k: fig.canvas.mpl_connect(k, fc)
-        for k in ('key_press_event')}
+        for k in ('key_press_event', )}
