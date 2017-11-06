@@ -3,9 +3,10 @@ channels:
 - anaconda
 - defaults
 dependencies:
+- h5py
+- ipython
 - matplotlib
 - pandas
 - pytables
-- h5py
-- ipython
+- scipy
 - python=3.6
