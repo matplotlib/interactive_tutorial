@@ -1,0 +1,187 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:2 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:nil date:t e:t email:nil
+#+OPTIONS: f:t inline:t num:t p:nil pri:nil prop:nil stat:t tags:t
+#+OPTIONS: tasks:t tex:t timestamp:t toc:nil todo:t |:t
+
+#+TITLE: Interactive Matplotlib Tutorial
+#+EMAIL:     tcaswell@bnl.gov
+#+DATE:      2017-11-06
+#+AUTHOR: Thomas A Caswell
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [x11names]
+#+LATEX_HEADER: \usemintedstyle{emacs}
+#+BEAMER_HEADER: \institute[BNL]{Brookhaven National Labratory}
+#+latex_header: \setbeamertemplate{navigation symbols}{}%remove navigation symbols
+#+latex_header: \usepackage{multicol}
+#+latex_header: \mode<beamer>{\usetheme{Madrid}} \setbeamertemplate{navigation symbols}{} \usepackage{color} \useoutertheme{noslideno} \useinnertheme{default}
+#+BEAMER_COLOR_THEME: seahorse
+#+BEAMER_THEME: Madrid
+#+BEAMER_INNER_THEME: default
+#+BEAMER_HEADER_EXTRA: \includeonlyframes{current}
+
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+PROPERTY: BEAMER_col_ALL 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 :ETC
+
+
+* 00 Introduction to OO Matplotlib
+** Parts of a Figure
+
+   [[./anatomy.pdf]]
+
+https://matplotlib.org/tutorials/introductory/usage.html#parts-of-a-figure
+
+** Matplotlib Layers
+  - =Renderer= ::   Internal, handles final 'on screen' or 'on disk' version
+  - =Canvas= :: Manages a =Figure= and and a =Renderer=
+  - Transforms :: between coord systems {'data', 'axes', 'figure', 'screen'}
+  - Artists :: 'middle layer', given a =Renderer= can draw self
+  - =Axes= and =Figure= methods :: create =Artists= and add to draw-tree
+  - =pyplot= :: create =Artists= and add to draw-tree
+
+\hline
+
+  - UI events :: mouse/keyboard events
+
+** =pyplot=
+ - =pyplot= is intentionally very close to MATLAB ploting API
+   - pro: easy for people switching from MATLAB
+   - pro: =pyplot= is much terser
+   - con: makes some interesting design choices
+   - con: has buckets of global state
+ - Everything in =pyplot= implemented in terms of =00=
+
+
+** =Axes= and =Figure= methods
+These classes manage:
+
+ - manage the draw tree (hold that thought)
+ - manage figure size, dpi, axes layout, view limits, axis scales
+ - namespace for plotting functions
+   - =ax.plot=
+   - =ax.hist=
+   - =ax.imshow=
+   - ...
+
+https://matplotlib.org/api/axes_api.html
+
+** =Aritsts=
+
+ - Everything that you see in the figure is an =Artist= (because it draws
+   on the =Canvas=)
+   - text, marks, images, spines, background patches
+ - responsible for translating internal state -> to =Renderer= method calls
+ - can mutate everything and re-draw
+   - =obj.set_*= and =obj.get_*= methodsy
+
+
+** draw via visitor pattern
+
+#+BEGIN_SRC python
+  class Canvas:
+      def draw(self):
+          render = self.get_renderer()
+          self.figure.draw(renderer)
+
+  class Figure:
+      def draw(self, renderer):
+          self.patch.draw(renderer)
+          for artist in self.get_children():
+              artist.draw(renderer)
+
+  class Line2D:
+      def draw(self, renderer):
+          renderer.draw_path(self.verticies, ...)
+#+END_SRC
+
+** =Tansforms= and coordinate systems
+
+
++-----------+-----------------------------+-----------------------------------+
+|Coords     |Transformation object        |Description                        |
++-----------+-----------------------------+-----------------------------------+
+|"data"     | ax.transData                |The coordinate system for the data,|
+|           |                             |controlled by xlim and ylim.       |
++-----------+-----------------------------+-----------------------------------+
+|"axes"     | ax.transAxes                |The coordinate system of the       |
+|           |                             |Axes; (0, 0) is bottom left of     |
+|           |                             | and (1, 1) is top right           |
++-----------+-----------------------------+-----------------------------------+
+|"figure"   | fig.transFigure             |The coordinate system of the       |
+|           |                             |Figure; (0, 0) is bottom left      |
+|           |                             | and (1, 1) is top right.          |
++-----------+-----------------------------+-----------------------------------+
+|"display"  | IdentityTransform()         |The pixel coordinate system of the |
+|           |                             |display; (0, 0) is bottom left     |
+|           |                             |and (width, height) is top right   |
+|           |                             |in pixels.                         |
++-----------+-----------------------------+-----------------------------------+
+
+https://matplotlib.org/tutorials/advanced/transforms_tutorial.html
+
+** =Canvas=
+ - holds a =Figure= instance
+ - knows how to make a =Renderer= instance
+ - for GUI backends typically uses MI and *is* the native GUI widget
+
+https://matplotlib.org/gallery/index.html#embedding-matplotlib-in-graphical-user-interfaces
+
+** =Renderer=
+Takes low-level data and renders to output
+
+Minimal set of methods:
+
+#+BEGIN_SRC python
+  class Renderer:
+      def draw_path(self, ...):
+          ...
+      def draw_image(self, ...):
+          ...
+      def draw_text(self, ...):
+          ...
+      def get_text_width_height_descent(self, ...):
+          ...
+
+#+END_SRC
+
+May have other methods to allow for optimizations
+
+Typically should not have to know this exists (unless implementing a
+new backend).
+
+
+** UI events on =Canvas=
+
++-----------------------+----------------------------------------+
+|Event name             | Description                            |
++-----------------------+----------------------------------------+
+|`button_press_event'   | mouse button is pressed                |
+|`button_release_event' | mouse button is released		 |
+|`draw_event'           | canvas draw (but before screen update) |
+|`key_press_event'      | key is pressed			 |
+|`key_release_event'    | key is released			 |
+|`motion_notify_event'  | mouse motion				 |
+|`pick_event'           | an object in the canvas is selected	 |
+|`resize_event'         | figure canvas is resized		 |
+|`scroll_event'         | mouse scroll wheel is rolled		 |
+|`figure_enter_event'   | mouse enters a new figure		 |
+|`figure_leave_event'   | mouse leaves a figure			 |
+|`axes_enter_event'     | mouse enters a new axes		 |
+|`axes_leave_event'     | mouse leaves an axes                   |
++-----------------------+----------------------------------------+
+
+ - =cid = canvas.mpl_connect(event_name, callback)=
+
+* 00 Installation
+** installation
+
+ =conda create mpl_tut -c anaconda matplotlib pandas pytables ipython python=3.6=
