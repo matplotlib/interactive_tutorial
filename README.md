@@ -4,7 +4,12 @@
 
 To set up an enviroment for this tutorial use
 
-    $ conda create -n mpl-tutorial -c conda-forge -c conda-forge/label/rc 'matplotlib>1.6' pandas pytables ipython python=3
+    $ conda env create -f environment.yml
+    
+or
+
+    $ conda create -n mpl_tutorial -c  anaconda matplotlib pandas pytables h5py ipython scipy python=3.6
+    
 
 for *nix
 
