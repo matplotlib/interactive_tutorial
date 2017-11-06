@@ -5,7 +5,7 @@ plt.ion()
 
 
 class LineMaker:
-    def __init__(self, ln):
+    def __init__(self, ln, *, color_cycle=None):
         # stash the current data
         self.xdata = list(ln.get_xdata())
         self.ydata = list(ln.get_ydata())
@@ -72,6 +72,15 @@ class LineMaker:
 
             # ask the GUI to re-draw the next time it can
             self.ln.figure.canvas.draw_idle()
+
+        try:
+            lw = int(event.key)
+        except (ValueError):
+            pass
+        else:
+            self.ln.set_linewidth(lw)
+            self.ln.figure.canvas.draw_idle()
+
 
 fig, ax = plt.subplots()
 ln, = ax.plot([], [], '-o')

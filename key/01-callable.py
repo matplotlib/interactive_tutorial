@@ -39,7 +39,7 @@ class FormatterCollector:
         return ''.join([ev.key for ev in self.event_deque
                         if ev.name == 'key_press_event'])
 
+
 fc = FormatterCollector()
-cid = fig.canvas.mpl_connect('key_press_event', fc)
-cid2 = fig.canvas.mpl_connect('key_release_event', fc)
-cid2 = fig.canvas.mpl_connect('button_press_event', fc)
+cids = {k: fig.canvas.mpl_connect(k, fc)
+        for k in ('key_press_event')}
