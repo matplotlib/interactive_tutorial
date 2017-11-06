@@ -5,6 +5,7 @@ from matplotlib.colors import LogNorm
 import numpy as np
 import h5py
 
+
 def plot_all_chan_spectrum(spectrum, bins, *, ax=None, **kwargs):
 
     def integrate_to_angles(spectrum, bins, lo, hi):
@@ -72,5 +73,5 @@ with h5py.File('germ.h5', 'r') as fin:
     spectrum = fin['spectrum'][:]
     bins = fin['bins'][:]
 
-plot_all_chan_spectrum(spectrum, bins)
+ret = plot_all_chan_spectrum(spectrum, bins)
 plt.show()

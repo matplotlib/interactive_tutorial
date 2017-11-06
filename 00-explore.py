@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-plt.ion()
 
 last_ev = None
 
@@ -23,6 +22,7 @@ fig, ax = plt.subplots()
 ax.plot(th, np.sin(th), 'o-', picker=5)
 
 cid = fig.canvas.mpl_connect('button_press_event', event_printer)
+plt.show()
 # fig.canvas.mpl_disconnect(cid)
 
 

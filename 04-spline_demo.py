@@ -129,7 +129,7 @@ class SplineCurve:
             pt_lst = list(points)
 
             # compute center
-            def tmp_fun(x, y): (x[0] + y[0], x[1] + y[1])
+            tmp_fun = lambda x, y: (x[0] + y[0], x[1] + y[1])
 
             center = np.array(reduce(tmp_fun, pt_lst)).reshape(2, 1)
             center /= len(pt_lst)
@@ -269,6 +269,10 @@ class SplineCurve:
 
 
 fig, ax = plt.subplots()
+ax.set_title('left-click to add points, right-click to remove')
 sp = SplineFitter(ax, .001)
-plt.ion()
 plt.show()
+
+
+# exercise
+# - add pick event to move a point

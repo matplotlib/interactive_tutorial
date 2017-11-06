@@ -1,10 +1,7 @@
 import matplotlib.pyplot as plt
 from cycler import cycler
 from w_helpers import (load_ornl_data, aggregate_by_month, aggregate_by_day,
-                          extract_day_of_hourly, extract_month_of_daily)
-
-
-plt.ion()
+                       extract_day_of_hourly, extract_month_of_daily)
 
 
 def setup_temperature_figure(**kwargs):
@@ -213,7 +210,7 @@ ornl = load_ornl_data()
 fig, (ax_by_month, ax_by_day, ax_by_hour) = setup_temperature_figure()
 ornl_at = AggregatedTimeTrace(ornl, 'ornl', ax_by_month, ax_by_day, ax_by_hour)
 fig.suptitle('Temperature')
-
+plt.show()
 
 # EXERCISE
 # - plot 3 day windows

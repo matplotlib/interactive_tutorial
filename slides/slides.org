@@ -184,4 +184,4 @@ new backend).
 * 00 Installation
 ** installation
 
- =conda create mpl_tut -c anaconda matplotlib pandas pytables ipython python=3.6=
+ =conda create mpl_tut -c anaconda matplotlib pandas pytables h5py ipython python=3.6=

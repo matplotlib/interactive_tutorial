@@ -28,7 +28,7 @@ https://www.packtpub.com/application-development/interactive-applications-using-
 
 ** install
 
-$ conda create mpl_tut -c anaconda matplotlib pandas pytables ipython python=3.6
+$ conda create mpl_tut -c anaconda matplotlib pandas pytables ipython h5py python=3.6
 $ source activate mpl_tut
 
 * 00-explore

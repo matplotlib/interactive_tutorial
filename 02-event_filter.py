@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
 from itertools import cycle
-plt.ion()
-
 
 class LineMaker:
     def __init__(self, ln):
@@ -55,7 +53,7 @@ class LineMaker:
 fig, ax = plt.subplots()
 ln, = ax.plot([], [], '-o')
 line_maker = LineMaker(ln)
-
+plt.show()
 # EXERCISE
 # - modify to remove the closest point when key == 'shift'
 # - change the line width for [1-9]

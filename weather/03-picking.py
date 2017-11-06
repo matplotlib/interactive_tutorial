@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
-from pddc_helpers import (load_bwi_data, aggregate_by_day, extract_day_of_hourly,
-                          label_date)
-import uuid
-plt.ion()
+from w_helpers import load_ornl_data, aggregate_by_day, extract_day_of_hourly
 
-bwi = load_bwi_data()
-bwi = bwi[bwi['year'] > 2014]
-bwi_daily = aggregate_by_day(bwi)
+import uuid
+
+
+ornl = load_ornl_data()
+ornl = ornl[ornl['year'] >= 2016]
+ornl_daily = aggregate_by_day(ornl)
 
 
 class RowPrinter:
@@ -39,13 +39,14 @@ class RowPrinter:
 
 
 fig, ax = plt.subplots()
-ln, = ax.plot('mean', '-o', data=bwi_daily)
+ln, = ax.plot('mean', '-o', data=ornl_daily)
 ax.set_xlabel('Date [UTC]')
 ax.set_ylabel('Air Temperature [℃]')
-ax.set_title('BWI')
-rp = RowPrinter(ln, bwi_daily)
+ax.set_title('ORNL')
+rp = RowPrinter(ln, ornl_daily)
 
-one_day = extract_day_of_hourly(bwi, 2015, 10, 18)
+one_day = extract_day_of_hourly(ornl, 2015, 10, 18)
+plt.show()
 
 # EXERCISE
 # - make the print out nicer looking

@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-plt.ion()
+
 
 last_ev = None
 
@@ -13,7 +13,7 @@ def event_printer(event):
     # capture the last event
     global last_ev
     last_ev = event
-    if event.inaxes is not None:
+    if hasattr(event, 'inaxes') and event.inaxes is not None:
         print(f'{event.name} ({event.xdata:.3f}, {event.ydata:.3f})')
     else:
         print(f'{event.name}')
@@ -28,3 +28,6 @@ cids = {k: fig.canvas.mpl_connect(k, event_printer)
                   'scroll_event',
                   'key_press_event', 'key_release_event',
                   'pick_event')}
+
+
+plt.show()

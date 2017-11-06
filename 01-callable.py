@@ -40,5 +40,5 @@ cid = fig.canvas.mpl_connect('key_press_event', ec)
 
 
 # EXERCISE
-# - Try connecting the same object to events calls
+# - Try connecting the same object to other events
 # - add helper function to manage event buffer

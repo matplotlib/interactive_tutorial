@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 from itertools import cycle
 import numpy as np
-plt.ion()
 
 
 class LineMaker:
@@ -85,3 +84,4 @@ class LineMaker:
 fig, ax = plt.subplots()
 ln, = ax.plot([], [], '-o')
 line_maker = LineMaker(ln)
+plt.show()
