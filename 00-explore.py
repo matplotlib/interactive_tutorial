@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 plt.ion()
 
-ev = None
+last_ev = None
 
 
 def event_printer(event):
@@ -10,11 +10,13 @@ def event_printer(event):
 
     Prints all public attributes +
     """
-    global ev
-    ev = event
+    # capture the last event
+    global last_ev
+    last_ev = event
     for k, v in sorted(vars(event).items()):
-        print('{k}: {v!r}'.format(k=k, v=v))
+        print(f'{k}: {v!r}')
     print('-'*25)
+
 
 th = np.linspace(0, 2*np.pi, 64)
 fig, ax = plt.subplots()

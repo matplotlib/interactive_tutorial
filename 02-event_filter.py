@@ -51,11 +51,12 @@ class LineMaker:
             # ask the GUI to re-draw the next time it can
             self.ln.figure.canvas.draw_idle()
 
+
 fig, ax = plt.subplots()
 ln, = ax.plot([], [], '-o')
 line_maker = LineMaker(ln)
 
 # EXERCISE
-# - modify to remove the closest point on button == 3 or key == 'shift'
+# - modify to remove the closest point when key == 'shift'
 # - change the line width for [1-9]
 # - clear the line when event.key == 'escape'

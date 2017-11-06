@@ -1,9 +1,7 @@
-from urllib.request import urlopen
 import datetime
-import numpy as np
 import pandas as pd
-import gzip
 import os
+
 
 def aggregate_by_month(df, col='T'):
     gb = df.groupby(('year', 'month'))['T'].describe().unstack()
