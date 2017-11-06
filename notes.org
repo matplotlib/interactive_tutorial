@@ -1,12 +1,11 @@
 * introduction
- - post-it notes
  - if you have used the pan / zoom tools or the 'g', 'l', 'k',
-   ... keys in mpl, you have used the mpl event framework
+   etc keys in mpl, you have used the mpl event framework
    - show demo of keys / pan / zoom
    - the updating coordinates
- - this is the first time I have given this, thanks for being guinea pigs!
- - events has always been in mpl
- - think about this work with an eye towards embedding in your own GUI
+ - events has always been in mpl (Event class came into codebase on
+   Tue Dec 28 2004 as a refactoring of existing functionality
+
 
 ** There is at least a book of material here
 
@@ -24,13 +23,13 @@ next!" - Ben Root
 https://www.packtpub.com/application-development/interactive-applications-using-matplotlib
 
  - http://matplotlib.org/users/event_handling.html
-   - this material will probably be folded into this page
  - http://matplotlib.org/examples/event_handling/index.html
  - http://matplotlib.org/api/widgets_api.html
 
 ** install
 
-$ conda create -p /tmp/demo -c conda-forge -c conda-forge/label/rc 'matplotlib>1.6' pandas pytables ipython python=3
+$ conda create mpl_tut -c anaconda matplotlib pandas pytables ipython python=3.6
+$ source activate mpl_tut
 
 * 00-explore
  - 'hello world' of event processing
@@ -66,7 +65,7 @@ $ conda create -p /tmp/demo -c conda-forge -c conda-forge/label/rc 'matplotlib>1
 
 * 02-event filtering
  - use an object with several methods, hook them all up to events
-- look at the values in the events to decide what to do
+ - look at the values in the events to decide what to do
  - hold an artist as state and mutate on user input
 
 * interlude about data
@@ -110,3 +109,21 @@ bwi = load_bwi_data()
  - $ conda install -c conda-forge cartopy proj4
  - click on the stations to print station name + template
  - use
+
+* Examples to look at
+** event_handling
+ - data_browser.py
+ - legend_picking.py
+ - path_editor.py
+ - poly_editor.py
+ - viewlims.py
+ - zoom_window.py
+** widgets
+ - buttons.py
+ - check_buttons.py
+ - cursor.py
+ - lasso_selector_demo_sgskip.py
+ - polygon_selector_demo.py
+ - rectangle_selector.py
+ - slider_demo.py
+ - span_selector.py
