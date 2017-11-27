@@ -1,10 +1,10 @@
+"""
+"""
+
 import scipy.interpolate as si
 import numpy as np
 from functools import reduce
 
-# uncomment this to set the backend
-# import matplotlib
-# matplotlib.use('Qt4Agg')
 import matplotlib.pyplot as plt
 
 
@@ -13,8 +13,84 @@ class TooFewPointsException(Exception):
 
 
 class SplineFitter:
+    def click_event(self, event):
+        '''Extracts locations from the user interaction
+
+        Intended to be subscribed to 'button_press_event'
+
+        Parameters
+        ----------
+        event : MouseEvent
+           The
+
+        '''
+        # stash the last event for debugging!
+        self.ev = event
+        # if shift is down, clear and bail
+        if event.key == 'shift':
+            self.clear()
+            return
+        # if no x or y data, bail
+        if event.xdata is None or event.ydata is None:
+            return
+        # if not in our Axes, bail
+        if event.inaxes is not self.ax:
+            return
+        # if left-click, append to points list
+        if event.button == 1:
+            self.pt_lst.append((event.xdata, event.ydata))
+        # if right-click, remove the closest point
+        elif event.button == 3:
+            self.remove_pt((event.xdata, event.ydata))
+
+        # re-draw (if needed)
+        self.redraw()
+
+    def remove_pt(self, loc):
+        """Remove the nearest point.
+
+        Parameters
+        ----------
+        loc : Tuple[float, float]
+            The x, y location of the cilck
+        """
+        if len(self.pt_lst) > 0:
+            self.pt_lst.pop(np.argmin(list(map(lambda x:
+                                               np.sqrt((x[0] - loc[0]) ** 2 +
+                                                       (x[1] - loc[1]) ** 2),
+                                               self.pt_lst))))
+
+    def redraw(self):
+        """Redraw the canvas given the current set of points
+        """
+        # get the current selected points
+        if len(self.pt_lst) > 0:
+            x, y = zip(*self.pt_lst)
+        else:
+            x, y = [], []
+        # and update the Line2D with the
+        self.pt_plot.set_xdata(x)
+        self.pt_plot.set_ydata(y)
+
+        # if we have more than 5 points, create a best-fit closed spline
+        if len(self.pt_lst) > 5:
+            SC = SplineCurve.from_pts(self.pt_lst, pix_err=self.pix_err)
+            new_pts = SC.q_phi_to_xy(0, np.linspace(0, 2 * np.pi, 1000))
+            center = SC.cntr
+            self.pt_lst.sort(key=lambda x:
+                             np.arctan2(x[1] - center[1], x[0] - center[0]))
+        else:
+            new_pts = ([], [])
+
+        # and update the data in the spline Line2D objcet
+        self.sp_plot.set_xdata(new_pts[0])
+        self.sp_plot.set_ydata(new_pts[1])
+
+        self.canvas.draw_idle()
+
     def __init__(self, ax, pix_err=1):
         self.canvas = ax.get_figure().canvas
+        self.ax = ax
         self.cid = None
         self.pt_lst = []
         self.pt_plot = ax.plot([], [], marker='o',
@@ -37,48 +113,6 @@ class SplineFitter:
         if self.cid is not None:
             self.canvas.mpl_disconnect(self.cid)
             self.cid = None
-
-    def click_event(self, event):
-        ''' Extracts locations from the user'''
-        if event.key == 'shift':
-            self.clear()
-            return
-        if event.xdata is None or event.ydata is None:
-            return
-        if event.button == 1:
-            self.pt_lst.append((event.xdata, event.ydata))
-        elif event.button == 3:
-            self.remove_pt((event.xdata, event.ydata))
-        self.ev = event
-        self.redraw()
-
-    def remove_pt(self, loc):
-        if len(self.pt_lst) > 0:
-            self.pt_lst.pop(np.argmin(list(map(lambda x:
-                                               np.sqrt((x[0] - loc[0]) ** 2 +
-                                                       (x[1] - loc[1]) ** 2),
-                                               self.pt_lst))))
-
-    def redraw(self):
-        if len(self.pt_lst) > 5:
-            SC = SplineCurve.from_pts(self.pt_lst, pix_err=self.pix_err)
-            new_pts = SC.q_phi_to_xy(0, np.linspace(0, 2 * np.pi, 1000))
-            center = SC.cntr
-            self.sp_plot.set_xdata(new_pts[0])
-            self.sp_plot.set_ydata(new_pts[1])
-            self.pt_lst.sort(key=lambda x:
-                             np.arctan2(x[1] - center[1], x[0] - center[0]))
-        else:
-            self.sp_plot.set_xdata([])
-            self.sp_plot.set_ydata([])
-        if len(self.pt_lst) > 0:
-            x, y = zip(*self.pt_lst)
-        else:
-            x, y = [], []
-        self.pt_plot.set_xdata(x)
-        self.pt_plot.set_ydata(y)
-
-        self.canvas.draw_idle()
 
     @property
     def points(self):
@@ -269,7 +303,7 @@ class SplineCurve:
 
 
 fig, ax = plt.subplots()
-ax.set_title('left-click to add points, right-click to remove')
+ax.set_title('left-click to add points, right-click to remove, shift-click to clear')
 sp = SplineFitter(ax, .001)
 plt.show()
 

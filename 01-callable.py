@@ -20,13 +20,14 @@ for k in ['keymap.all_axes',
 
 
 class EventCollector:
-    def __init__(self, maxlen=12):
+    def __init__(self, maxlen=15):
         self.event_deque = deque([], maxlen=maxlen)
 
     def __call__(self, event):
-        print('called {} at ({}, {})'.format(event.name,
-                                             event.xdata,
-                                             event.ydata))
+        print(f'called {event.name} at ')
+        print(f' screen: ({event.x}, {event.y})')
+        if event.inaxes:
+            print(f'   data: ({event.xdata:.3g}, {event.ydata:.3g})')
         self.event_deque.append(event)
 
 
@@ -41,4 +42,5 @@ cid = fig.canvas.mpl_connect('key_press_event', ec)
 
 # EXERCISE
 # - Try connecting the same object to other events
-# - add helper function to manage event buffer
+# - add helper method to manage event buffer
+#   - print out message of key press events

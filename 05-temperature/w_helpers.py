@@ -1,10 +1,27 @@
 import datetime
 import pandas as pd
 import os
+from pathlib import Path
 
 
 def aggregate_by_month(df, col='T'):
-    gb = df.groupby(('year', 'month'))['T'].describe()
+    """Given a data frame of hourly data, compute statistics by month
+
+    Parameters
+    ----------
+    df : DataFrame
+       Must have columns {'year', 'month'}
+
+    col : str, optional
+       The column to aggregate.  Defaults to 'T'
+
+    Returns
+    -------
+    DataFrame
+       Indexed on the 15th of the month,
+       Has columns of `describe` + 'year' and 'month'
+    """
+    gb = df.groupby(('year', 'month'))[col].describe()
     new_index = [datetime.date(*m, *(15, )) for m in gb.index]
     gb.reset_index(inplace=True)
     gb.index = new_index
@@ -12,7 +29,24 @@ def aggregate_by_month(df, col='T'):
 
 
 def aggregate_by_day(df, col='T'):
-    gb = df.groupby(('year', 'month', 'day'))['T'].describe()
+    """Given a data frame of hourly data, compute statistics by day
+
+    Parameters
+    ----------
+    df : DataFrame
+       Must have columns {'year', 'month', 'day'}
+
+    col : str, optional
+       The column to aggregate.  Defaults to 'T'
+
+    Returns
+    -------
+    DataFrame
+       Indexed by day.
+       Has columns of `describe` + 'year', 'month', and 'day'
+    """
+
+    gb = df.groupby(('year', 'month', 'day'))[col].describe()
     new_index = [datetime.date(*m) for m in gb.index]
     gb.reset_index(inplace=True)
     gb.index = new_index
@@ -20,6 +54,22 @@ def aggregate_by_day(df, col='T'):
 
 
 def extract_month_of_daily(daily, year, month):
+    """Given daily values, extract a given month
+
+    Parameters
+    ----------
+    daily : DataFrame
+        must of columns {'year', 'month'}
+
+    year, month : int
+        The year and month of interest
+
+    Returns
+    -------
+
+    DataFrame
+         Indexed on days from start of month.  Same columns as input
+    """
     ix = (daily['month'] == month) & (daily['year'] == year)
     df = daily[ix]
     idx = [(m - df.index[0]).days for m in df.index]
@@ -50,18 +100,6 @@ def extract_day_of_hourly(hourly_df, year, month, day):
     return df
 
 
-def load_bwi_data():
-    fname = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                         'bwi.h5')
-    return pd.read_hdf(fname)
-
-
-def load_ornl_data():
-    fname = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                         'ornl.h5')
-    return pd.read_hdf(fname)
-
-
 def label_date(ax, label, date, df):
     '''Helper function to annotate a date
 
@@ -88,3 +126,28 @@ def label_date(ax, label, date, df):
                        xytext=(-10, -30),
                        textcoords='offset points',
                        arrowprops={'arrowstyle': '->'})
+
+
+def load_data(dataset):
+    """Load data from a given dataset
+
+    Parameters
+    ----------
+    dataset : str
+       Searches from dataset.h5 in this file's directory
+
+    Returns
+    -------
+    DataFrame
+       Hourly temperature data
+    """
+    p = Path(os.path.dirname(os.path.realpath(__file__)))
+    fname = p / f'{dataset}.h5'
+
+    try:
+        return pd.read_hdf(str(fname))
+    except FileNotFoundError:
+        sources = {f.stem for f in p.iterdir() if
+                   f.is_file() and f.name.endswith('h5')}
+        raise RuntimeError(f"Could not not find {dataset:!r}.  Existing "
+                           f"datasets are {sources}")

@@ -26,13 +26,14 @@ ln, = ax.plot(th, np.sin(th), 'o-', picker=5)
 
 
 class FormatterCollector:
-    def __init__(self, maxlen=12):
+    def __init__(self, maxlen=15):
         self.event_deque = deque([], maxlen=maxlen)
 
     def __call__(self, event):
-        print('called {} at ({}, {})'.format(event.name,
-                                             event.xdata,
-                                             event.ydata))
+        print(f'called {event.name} at ')
+        print(f' screen: ({event.x}, {event.y})')
+        if event.inaxes:
+            print(f'   data: ({event.xdata:.3g}, {event.ydata:.3g})')
         self.event_deque.append(event)
 
     def collect_string(self):
@@ -42,4 +43,4 @@ class FormatterCollector:
 
 fc = FormatterCollector()
 cids = {k: fig.canvas.mpl_connect(k, fc)
-        for k in ('key_press_event', )}
+        for k in ('key_press_event', 'button_press_event')}

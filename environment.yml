@@ -10,3 +10,4 @@ dependencies:
 - pytables
 - scipy
 - python=3.6
+- pyqt

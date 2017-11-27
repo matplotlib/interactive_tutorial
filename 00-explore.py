@@ -19,6 +19,7 @@ def event_printer(event):
 
 th = np.linspace(0, 2*np.pi, 64)
 fig, ax = plt.subplots()
+# the `picker=5` kwarg turn on pick-events for this artist
 ax.plot(th, np.sin(th), 'o-', picker=5)
 
 cid = fig.canvas.mpl_connect('button_press_event', event_printer)
@@ -26,10 +27,13 @@ plt.show()
 # fig.canvas.mpl_disconnect(cid)
 
 
-# EXERCISE
-# - Try all 'active' events
-#   ['button_press_event', 'button_release_event', 'scroll_event',
-#    'key_press_event', 'key_release_event', 'pick_event']
-# - tweak the print line
-# - remove a callback
-# - add more than one callback to the canvas
+# EXERCISE (10 - 15 minutes)
+#
+# play around with events interactively
+#
+#   - Try all 'active' events
+#     ['button_press_event', 'button_release_event', 'scroll_event',
+#      'key_press_event', 'key_release_event', 'pick_event']
+#   - tweak the print line
+#   - remove a callback
+#   - add more than one callback to the canvas

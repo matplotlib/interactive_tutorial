@@ -5,11 +5,11 @@
 To set up an enviroment for this tutorial use
 
     $ conda env create -f environment.yml
-    
+
 or
 
-    $ conda create -n mpl_tutorial -c  anaconda matplotlib pandas pytables h5py ipython scipy python=3.6
-    
+    $ conda create -n mpl-tutorial -c  anaconda matplotlib pandas pytables h5py ipython scipy python=3.6
+
 
 for *nix
 

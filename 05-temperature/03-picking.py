@@ -1,12 +1,13 @@
 import matplotlib.pyplot as plt
-from w_helpers import load_ornl_data, aggregate_by_day, extract_day_of_hourly
+from w_helpers import load_data, aggregate_by_day, extract_day_of_hourly
 
 import uuid
 
+datasource = 'ornl'
 
-ornl = load_ornl_data()
-ornl = ornl[ornl['year'] >= 2016]
-ornl_daily = aggregate_by_day(ornl)
+temperature = load_data(datasource)
+temperature = temperature[temperature['year'] >= 2016]
+temperature_daily = aggregate_by_day(temperature)
 
 
 class RowPrinter:
@@ -39,13 +40,13 @@ class RowPrinter:
 
 
 fig, ax = plt.subplots()
-ln, = ax.plot('mean', '-o', data=ornl_daily)
+ln, = ax.plot('mean', '-o', data=temperature_daily)
 ax.set_xlabel('Date [UTC]')
 ax.set_ylabel('Air Temperature [℃]')
-ax.set_title('ORNL')
-rp = RowPrinter(ln, ornl_daily)
+ax.set_title(f'{datasource} temperature')
+rp = RowPrinter(ln, temperature_daily)
 
-one_day = extract_day_of_hourly(ornl, 2015, 10, 18)
+one_day = extract_day_of_hourly(temperature, 2015, 10, 18)
 plt.show()
 
 # EXERCISE

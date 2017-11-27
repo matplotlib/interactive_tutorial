@@ -39,12 +39,17 @@
    [[./anatomy.pdf]]
 
 https://matplotlib.org/tutorials/introductory/usage.html#parts-of-a-figure
+** Parts of a Figure
+ - Figure :: Everything you see, top level container
+ - Axes :: One set coordinates, many *Axes* per *Figure*
+ - Axis :: The spines, ticks, and labels on the *Axes*
+ - Artist :: everything you see
 
 ** Matplotlib Layers
-  - =Renderer= ::   Internal, handles final 'on screen' or 'on disk' version
+  - =Renderer= ::   Internal, handles final `on screen' or `on disk' version
   - =Canvas= :: Manages a =Figure= and and a =Renderer=
-  - Transforms :: between coord systems {'data', 'axes', 'figure', 'screen'}
-  - Artists :: 'middle layer', given a =Renderer= can draw self
+  - Transforms :: between coord systems {`data', `axes', `figure', `screen'}
+  - Artists :: `middle layer', given a =Renderer= can draw self
   - =Axes= and =Figure= methods :: create =Artists= and add to draw-tree
   - =pyplot= :: create =Artists= and add to draw-tree
 
@@ -59,7 +64,7 @@ https://matplotlib.org/tutorials/introductory/usage.html#parts-of-a-figure
    - con: makes some interesting design choices
    - con: has buckets of global state
  - Everything in =pyplot= implemented in terms of =00=
-
+   - =?? plt.FOO= can be good way to look up how to do something
 
 ** =Axes= and =Figure= methods
 These classes manage:
@@ -79,9 +84,9 @@ https://matplotlib.org/api/axes_api.html
  - Everything that you see in the figure is an =Artist= (because it draws
    on the =Canvas=)
    - text, marks, images, spines, background patches
- - responsible for translating internal state -> to =Renderer= method calls
- - can mutate everything and re-draw
-   - =obj.set_*= and =obj.get_*= methodsy
+ - responsible for translating internal state → =Renderer= method calls
+ - can be mutated and re-drawn
+   - =obj.set_*= and =obj.get_*= methods
 
 
 ** draw via visitor pattern
@@ -130,15 +135,18 @@ https://matplotlib.org/tutorials/advanced/transforms_tutorial.html
 
 ** =Canvas=
  - holds a =Figure= instance
- - knows how to make a =Renderer= instance
- - for GUI backends typically uses MI and *is* the native GUI widget
+ - knows how to make a =Renderer= instance at correct size and DPI on
+   demand
+ - for GUI backends typically uses multiple inheritance and *is* the
+   native GUI widget
 
 https://matplotlib.org/gallery/index.html#embedding-matplotlib-in-graphical-user-interfaces
 
 ** =Renderer=
-Takes low-level data and renders to output
+ - Takes low-level data and renders to output
+ - Typically should not have to know this exists
 
-Minimal set of methods:
+*Minimal set of methods* (may have other methods for optimizations)
 
 #+BEGIN_SRC python
   class Renderer:
@@ -153,11 +161,11 @@ Minimal set of methods:
 
 #+END_SRC
 
-May have other methods to allow for optimizations
-
-Typically should not have to know this exists (unless implementing a
-new backend).
-
+** UI events
+ - if you have used the pan / zoom tools or the 'g', 'l', 'k',
+   etc keys in mpl, you have used the mpl event framework
+ - events has always been in mpl (Event class came into codebase on
+   Tue Dec 28 2004 as a refactoring of existing functionality
 
 ** UI events on =Canvas=
 
@@ -180,10 +188,29 @@ new backend).
 +-----------------------+----------------------------------------+
 
  - =cid = canvas.mpl_connect(event_name, callback)=
-
-* 00 Installation
+ - =canvas.mpl_disconnect(cid)=
+* 01 Installation
 ** installation
+#+BEGIN_SRC sh
+  git clone \
+      https://github.com/tacaswell/interactive_mpl_tutorial
+  cd interactive_mpl_tutorial
+  conda env create -f environment.yml
+  source activate mpl-tutorial    # linux / OSX
+  activate mpl-tutorial           # windows
 
-conda create -n mpl_tut -c anaconda matplotlib pandas pytables h5py ipython scipy python=3.6
-source activate mpl_tut
-git clone https://github.com/tacaswell/interactive_mpl_tutorial
+#+END_SRC
+
+To run examples:
+
+#+BEGIN_SRC sh
+
+  ipython --matplotlib=qt5
+
+#+END_SRC
+
+#+BEGIN_SRC python
+
+In [N]: %run -i 00-explore.py
+
+#+END_SRC

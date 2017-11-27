@@ -1,4 +1,7 @@
-* introduction
+* introduction [30 minutes]
+** slides
+
+** UI tools
  - if you have used the pan / zoom tools or the 'g', 'l', 'k',
    etc keys in mpl, you have used the mpl event framework
    - show demo of keys / pan / zoom
@@ -7,7 +10,7 @@
    Tue Dec 28 2004 as a refactoring of existing functionality
 
 
-** There is at least a book of material here
+** There is more than a book of material here
 
 Interactive applications using matplotlib by Ben Root
 
@@ -31,7 +34,7 @@ https://www.packtpub.com/application-development/interactive-applications-using-
 $ conda create mpl_tut -c anaconda matplotlib pandas pytables ipython h5py scipy python=3.6
 $ source activate mpl_tut
 
-* 00-explore
+* 00-explore  [5 + 15 minutes]
  - 'hello world' of event processing
  - layers of mpl
    - figure / axes / artist vs canvas distinction
@@ -50,7 +53,7 @@ $ source activate mpl_tut
      - important if you are doing blitting (which is it's own tutorial)
  - use OO interface when ever possible
 
-* 01-callable
+* 01-callable [
  - frequently want to carry state between user interactions
  - simplest way (short of globals) is a callable class
  - going to want to restart IPython after this
@@ -68,16 +71,16 @@ $ source activate mpl_tut
  - look at the values in the events to decide what to do
  - hold an artist as state and mutate on user input
 
-* interlude about data
+* interlude about temperature data
  - data sets from NOAA, historical hourly weather reports
  - only extracting the air temperature, a LOT more information in the reports
  - raw data extraction code in 99-collect_data.py, but processed data
    from BWI in repo
  - ~10 years of ~hourly air temperature readings
 #+BEGIN_SRC python
-from pddc_helpers import load_bwi_data
+from w_helpers import load_data
 
-bwi = load_bwi_data()
+bwi = load_data('nyc')
 
 #+END_SRC
  - plot full time series
