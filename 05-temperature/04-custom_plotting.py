@@ -27,6 +27,7 @@ def plot_aggregated_errorbar(ax, gb, label, picker=None, **kwargs):
 
 arts = plot_aggregated_errorbar(ax, bwi_monthly, 'bwi')
 
-# EXERCISE
+# EXERCISE (10 minutes)
+
 # - make the shaded area configurable
 # - make center line configurable

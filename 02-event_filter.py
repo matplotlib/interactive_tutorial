@@ -55,8 +55,9 @@ fig, ax = plt.subplots()
 ln, = ax.plot([], [], '-o')
 line_maker = LineMaker(ln)
 plt.show()
-# EXERCISE
-# - modify to remove the closest point when key == 'shift'
 
+# EXERCISE (15 minutes)
+
+# - modify to remove the closest point when key == 'shift'
 # - change the line width for [1-9]
 # - clear the line when event.key == 'escape'

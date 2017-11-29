@@ -40,7 +40,7 @@ ec = EventCollector()
 cid = fig.canvas.mpl_connect('key_press_event', ec)
 
 
-# EXERCISE
+# EXERCISE (10 minutes)
 # - Try connecting the same object to other events
 # - add helper method to manage event buffer
 #   - print out message of key press events
