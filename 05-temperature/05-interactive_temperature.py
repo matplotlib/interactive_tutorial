@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from cycler import cycler
-from w_helpers import (load_ornl_data, aggregate_by_month, aggregate_by_day,
+from w_helpers import (load_data, aggregate_by_month, aggregate_by_day,
                        extract_day_of_hourly, extract_month_of_daily)
 
 
@@ -206,12 +206,13 @@ class AggregatedTimeTrace:
         self.yearly_ax.figure.canvas.mpl_disconnect(self.cid)
 
 
-ornl = load_ornl_data()
+temperature = load_data('central_park')
 fig, (ax_by_month, ax_by_day, ax_by_hour) = setup_temperature_figure()
-ornl_at = AggregatedTimeTrace(ornl, 'ornl', ax_by_month, ax_by_day, ax_by_hour)
+temperature_at = AggregatedTimeTrace(temperature, 'temperature',
+                                     ax_by_month, ax_by_day, ax_by_hour)
 fig.suptitle('Temperature')
 plt.show()
 
-# EXERCISE
-# - plot 3 day windows
-# - plot percentile band as well as min/max
+# EXERCISE (15 minutes)
+# - plot 3 day windows centered on picked day
+# - cycle through min/max, std bands, and no bands on key stroke

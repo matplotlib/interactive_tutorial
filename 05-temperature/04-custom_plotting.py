@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
-from w_helpers import load_bwi_data, aggregate_by_month
+from w_helpers import load_data, aggregate_by_month
 plt.ion()
 
-bwi = load_bwi_data()
-bwi_monthly = aggregate_by_month(bwi)
+temperature = load_data('central_park')
+temperature_monthly = aggregate_by_month(temperature)
 
 fig, ax = plt.subplots()
 
@@ -25,7 +25,7 @@ def plot_aggregated_errorbar(ax, gb, label, picker=None, **kwargs):
     return eb, fill
 
 
-arts = plot_aggregated_errorbar(ax, bwi_monthly, 'bwi')
+arts = plot_aggregated_errorbar(ax, temperature_monthly, 'temperature')
 
 # EXERCISE (10 minutes)
 
