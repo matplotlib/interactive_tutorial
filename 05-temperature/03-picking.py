@@ -1,18 +1,19 @@
 import matplotlib.pyplot as plt
-from w_helpers import load_data, aggregate_by_day, extract_day_of_hourly
+from w_helpers import load_data, aggregate_by_day, extract_day_of_hourly, label_date
 
 import uuid
 
-datasource = 'ornl'
+datasource = 'central_park'
 
 temperature = load_data(datasource)
-temperature = temperature[temperature['year'] >= 2016]
+temperature = temperature[temperature['year'] >= 2017]
 temperature_daily = aggregate_by_day(temperature)
 
 
 class RowPrinter:
     def __init__(self, ln, df, picker=10):
         ln.set_picker(picker)
+        # we can use this to ID our line!
         self.uid = str(uuid.uuid4())
         ln.set_gid(self.uid)
         self.ln = ln
@@ -44,9 +45,10 @@ ln, = ax.plot('mean', '-o', data=temperature_daily)
 ax.set_xlabel('Date [UTC]')
 ax.set_ylabel('Air Temperature [℃]')
 ax.set_title(f'{datasource} temperature')
+
 rp = RowPrinter(ln, temperature_daily)
 
-one_day = extract_day_of_hourly(temperature, 2015, 10, 18)
+one_day = extract_day_of_hourly(temperature, 2017, 10, 27)
 plt.show()
 
 # EXERCISE
@@ -54,8 +56,7 @@ plt.show()
 
 # - open a new window with plot of day temperature
 #   - fig, ax = plt.subplots()
-#   - one_day = extract_day_of_hourly(bwi, 2015, 10, 18)
-
-
+#   - one_day = extract_day_of_hourly(temperature, 2015, 10, 18)
 # - make picking add a label with `label_data`
-# - use `get_gid` to filter instead of `is not`
+
+# - use `get_gid` to filter artists instead of `is not`
