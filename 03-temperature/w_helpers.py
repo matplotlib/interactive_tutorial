@@ -141,7 +141,7 @@ def load_data(dataset):
     DataFrame
        Hourly temperature data
     """
-    p = Path(os.path.dirname(os.path.realpath(__file__)))
+    p = Path(os.path.dirname(os.path.realpath(__file__))) / 'data'
     fname = p / f'{dataset}.h5'
 
     try:
@@ -149,5 +149,5 @@ def load_data(dataset):
     except FileNotFoundError:
         sources = {f.stem for f in p.iterdir() if
                    f.is_file() and f.name.endswith('h5')}
-        raise RuntimeError(f"Could not not find {dataset:!r}.  Existing "
+        raise RuntimeError(f"Could not not find {dataset!r}.  Existing "
                            f"datasets are {sources}")
