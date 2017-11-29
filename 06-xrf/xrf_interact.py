@@ -152,7 +152,7 @@ class XRFInteract(object):
         x, y = event.xdata, event.ydata
         # get index by assuming even spacing
         # TODO use kdtree?
-        diff = np.hypot((self.x_pos - x),  (self.y_pos - y))
+        diff = np.hypot((self.x_pos - x), (self.y_pos - y))
         y_ind, x_ind = np.unravel_index(np.argmin(diff), diff.shape)
 
         # get the spectrum for this point

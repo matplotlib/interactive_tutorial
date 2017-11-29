@@ -75,3 +75,7 @@ with h5py.File('germ.h5', 'r') as fin:
 
 ret = plot_all_chan_spectrum(spectrum, bins)
 plt.show()
+
+
+# Exercise (15 minutes)
+# - add span selector to top axes to change curve in right axes
