@@ -303,10 +303,11 @@ class SplineCurve:
 
 
 fig, ax = plt.subplots()
-ax.set_title('left-click to add points, right-click to remove, shift-click to clear')
+ax.set_title(
+    'left-click to add points, right-click to remove, shift-click to clear')
 sp = SplineFitter(ax, .001)
 plt.show()
 
 
-# exercise
+# exercise (10 minutes)
 # - add pick event to move a point
