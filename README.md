@@ -19,6 +19,17 @@ for windows
 
     $ activate mpl-tutorial
 
+### Troubleshooting
+
+Try updating conda in case you are encountering a bug that has been fixed.
+
+    $ conda update conda
+
+Try this command (UNIX and OSX only) to ensure that the shell has not cached an
+old reference to IPython. Do this after the `activate` step.
+
+    $ hash -r
+
 ### for 99-get_data
 
     $ conda install -c conda-forge cartopy proj4
