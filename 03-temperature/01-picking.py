@@ -57,6 +57,7 @@ plt.show()
 # - open a new window with plot of day temperature
 #   - fig, ax = plt.subplots()
 #   - one_day = extract_day_of_hourly(temperature, 2015, 10, 18)
-# - make picking add a label with `label_data`
+# - make picking add a label using the function `label_date` (which is
+#   already imported from the `w_helpers` module)
 
 # - use `get_gid` to filter artists instead of `is not`
