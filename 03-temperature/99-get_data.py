@@ -191,3 +191,8 @@ data_path = os.path.expanduser('~/data_cache')
 fih = get_filtered_isd(data_path)
 fig = plt.figure()
 ax, art, sp = plot_station_locations(fig, fih)
+
+# after finding a station by picking on the map:
+#
+# mdw = sp.get_station_data('CHICAGO MIDWAY INTL ARPT', range(2015, 2019))
+# mdw.to_hdf('data/mdw.h5')

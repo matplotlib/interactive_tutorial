@@ -206,7 +206,7 @@ class AggregatedTimeTrace:
         self.yearly_ax.figure.canvas.mpl_disconnect(self.cid)
 
 
-temperature = load_data('central_park')
+temperature = load_data('mdw')
 fig, (ax_by_month, ax_by_day, ax_by_hour) = setup_temperature_figure()
 temperature_at = AggregatedTimeTrace(temperature, 'temperature',
                                      ax_by_month, ax_by_day, ax_by_hour)

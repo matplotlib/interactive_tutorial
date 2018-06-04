@@ -3,7 +3,7 @@ from w_helpers import load_data, aggregate_by_day, extract_day_of_hourly, label_
 
 import uuid
 
-datasource = 'central_park'
+datasource = 'mdw'
 
 temperature = load_data(datasource)
 temperature = temperature[temperature['year'] >= 2017]

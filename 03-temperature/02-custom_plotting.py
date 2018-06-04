@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from w_helpers import load_data, aggregate_by_month
 plt.ion()
 
-temperature = load_data('central_park')
+temperature = load_data('mdw')
 temperature_monthly = aggregate_by_month(temperature)
 
 fig, ax = plt.subplots()
